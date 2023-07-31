@@ -44,3 +44,6 @@ Face-Match is a program aiming at face comparison
 * To improve the efficiency again, create a Thread Pool in function.
 
 * New a js file and a html file, allowing coders to submit images in browsers.
+
+
+real change?
