@@ -4,7 +4,7 @@ from main import find_person_info  # 确保你的main.py文件在同一目录下
 app = Flask(__name__, static_url_path='', static_folder='static')
 
 
-@app.route('/find_person_info', methods=['POST'])
+@app.route('/find_person_info', methods=['POST', 'GET'])
 def find_person_info_api():
     image_path = request.json['image_path']
     try:
