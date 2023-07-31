@@ -2,6 +2,9 @@ import os
 import pandas as pd
 import face_recognition
 import pickle
+import time
+
+start_time = time.time()
 
 
 def check_image_exists(image_path):
@@ -85,4 +88,9 @@ def find_person_info(image_path):
     matched_persons = get_person_info(matched_faces)
     return matched_persons
 
-# print(find_person_info("upload/twoman.png"))
+
+end_time = time.time()
+running_time = end_time-start_time
+print(running_time)
+
+print(find_person_info("upload/twoman.png"))
