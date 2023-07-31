@@ -55,6 +55,7 @@ def compare_faces(unknown_face_encodings, known_face_encodings):
     # 定义一个内部函数，它接受一个未知的面部编码作为参数
     def compare_face(unknown_face_encoding):
         # 对于每个已知的面部编码
+        # known_face_encodings.items()方法返回一个包含字典所有项的列表，每个项是一个元组，元组的第一个元素是键，第二个元素是值。
         for filename, known_face_encoding in known_face_encodings.items():
             # 使用face_recognition.compare_faces函数来比较未知的面部编码和已知的面部编码
             results = face_recognition.compare_faces([known_face_encoding], unknown_face_encoding, tolerance)
@@ -69,7 +70,7 @@ def compare_faces(unknown_face_encodings, known_face_encodings):
         # 使用executor.submit方法为每个未知的面部编码提交一个任务到线程池
         # 每个任务就是调用compare_face函数并传入一个未知的面部编码
         # executor.submit方法返回一个Future对象，这个对象代表一个尚未完成的计算
-        # 创建一个字典futures，它的键是Future对象，值是对应的未知的面部编码
+        # Future对象代表一个尚未完成的计算。当提交一个任务到ThreadPoolExecutor（或者其他类型的Executor），它会立即返回一个Future对象
         futures = {executor.submit(compare_face, face_encoding): face_encoding for face_encoding in unknown_face_encodings}
 
         # 使用as_completed函数来迭代已完成的Future对象
