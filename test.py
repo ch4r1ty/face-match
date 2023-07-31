@@ -3,6 +3,7 @@ import pandas as pd
 import face_recognition
 import pickle
 import time
+from parameter import *
 
 start_time = time.time()
 
@@ -58,7 +59,7 @@ def compare_faces(unknown_face_encodings, known_face_encodings):
     matched_faces = []
     for unknown_face_encoding in unknown_face_encodings:
         for filename, known_face_encoding in known_face_encodings.items():
-            results = face_recognition.compare_faces([known_face_encoding], unknown_face_encoding, tolerance=0.5)
+            results = face_recognition.compare_faces([known_face_encoding], unknown_face_encoding, tolerance)
             if results[0]:
                 matched_faces.append(filename.split('.')[0])
     return matched_faces
