@@ -5,6 +5,7 @@ import face_recognition
 import pickle
 import time
 from parameter import *
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 start_time = time.time()
 
@@ -48,12 +49,43 @@ def get_known_face_encodings(folder_path, file_path):
 
 # 从Excel文件中获取匹配的面部的信息
 def compare_faces(unknown_face_encodings, known_face_encodings):
+    # 创建一个空列表来存储匹配的面部
     matched_faces = []
-    for unknown_face_encoding in unknown_face_encodings:
+
+    # 定义一个内部函数，它接受一个未知的面部编码作为参数
+    def compare_face(unknown_face_encoding):
+        # 对于每个已知的面部编码
         for filename, known_face_encoding in known_face_encodings.items():
+            # 使用face_recognition.compare_faces函数来比较未知的面部编码和已知的面部编码
             results = face_recognition.compare_faces([known_face_encoding], unknown_face_encoding, tolerance)
+            # 如果找到匹配的面部，返回匹配的面部的文件名（不包括扩展名）
             if results[0]:
-                matched_faces.append(filename.split('.')[0])
+                return filename.split('.')[0]
+        # 如果没有找到匹配的面部，返回None
+        return None
+
+    # 创建一个ThreadPoolExecutor实例，这是一个线程池。max_workers=4参数表示线程池中最多可以有4个线程同时运行
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        # 使用executor.submit方法为每个未知的面部编码提交一个任务到线程池
+        # 每个任务就是调用compare_face函数并传入一个未知的面部编码
+        # executor.submit方法返回一个Future对象，这个对象代表一个尚未完成的计算
+        # 创建一个字典futures，它的键是Future对象，值是对应的未知的面部编码
+        futures = {executor.submit(compare_face, face_encoding): face_encoding for face_encoding in unknown_face_encodings}
+
+        # 使用as_completed函数来迭代已完成的Future对象
+        for future in as_completed(futures):
+            # 对于每个已完成的Future对象，获取它的结果（即compare_face函数的返回值）
+            face = futures[future]
+            try:
+                result = future.result()
+                # 如果结果不是None，就将结果添加到matched_faces列表中
+                if result is not None:
+                    matched_faces.append(result)
+            # 如果在获取结果时发生异常，打印一个错误消息
+            except Exception as exc:
+                print('%r generated an exception: %s' % (face, exc))
+
+    # 返回matched_faces列表，这个列表包含了所有匹配的面部的文件名
     return matched_faces
 
 
@@ -83,4 +115,4 @@ end_time = time.time()
 running_time = end_time-start_time
 print(running_time)
 
-print(find_person_info("upload/twoman.png"))
+print(find_person_info("upload/eason.png"))

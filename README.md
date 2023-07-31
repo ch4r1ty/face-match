@@ -35,8 +35,10 @@ Face-Match is a program aiming at face comparison
 
 ### 07/31/2023
 
-To improve the efficiency of the program, by saving face-encodings in a new file: **'face_encodings.pkl'**, instead of getting all the know_face_encodings each time when posts a request.
+* To improve the efficiency of the program, by saving face-encodings in a new file: **'face_encodings.pkl'**, instead of getting all the know_face_encodings each time when posts a request.
 
-Before: 0.15s
+  Before: 0.15s
 
-Now: 1.1920928955078125e-05
+  Now: 1.1920928955078125e-05
+
+* To improve the efficiency again, create a Thread Pool in function.
