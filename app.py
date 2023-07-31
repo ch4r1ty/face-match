@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from test import find_person_info  # 确保你的function.py文件在同一目录下，或者在Python的搜索路径中
+from main import find_person_info  # 确保你的function.py文件在同一目录下，或者在Python的搜索路径中
 
 app = Flask(__name__)
 
