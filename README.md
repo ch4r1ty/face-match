@@ -44,3 +44,9 @@ Face-Match is a program aiming at face comparison
 * To improve the efficiency again, create a Thread Pool in function.
 
 * New a js file and a html file, allowing coders to submit images in browsers.
+
+
+### 08/02/2023
+
+* Instead of importing an image file, this version imports the binary files, improving efficiency of the program.
+* Loading the Excel file in the first beginning, rather than in functions.
