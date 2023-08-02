@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Image</title>
+</head>
+<body>
+    <h1>Upload Image</h1>
+    <input type="file" id="image-upload">
+    <button id="submit-button">Submit</button>
+
+    <script>
+        document.getElementById('submit-button').addEventListener('click', function() {
+            let formData = new FormData();
+            formData.append("image", document.getElementById('image-upload').files[0]);
+
+            fetch('http://localhost:5000/find_person_info', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+        });
+    </script>
+</body>
+</html>
